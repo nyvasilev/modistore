@@ -2,11 +2,11 @@ import ProductList from "@/components/shared/product/product-list";
 import { getLatestProducts } from "@/lib/actions/products.actions";
 
 const Homepage = async () => {
-  const latesProducts = await getLatestProducts();
+  const latestProducts = await getLatestProducts();
 
   return (
     <>
-      <ProductList data={latesProducts} title="Newest Arrivals" limit={4} />
+      <ProductList data={latestProducts} title="Newest Arrivals" limit={4} />
     </>
   );
 };

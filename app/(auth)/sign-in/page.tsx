@@ -5,6 +5,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
+import CredentialsSinInForm from "./credentials-signin-form";
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,7 +34,9 @@ const SignInPage = () => {
             Sign in to your account
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">{/* FORM HERE */}</CardContent>
+        <CardContent className="space-y-4">
+          <CredentialsSinInForm />
+        </CardContent>
       </Card>
     </div>
   );

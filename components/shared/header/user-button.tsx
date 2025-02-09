@@ -24,7 +24,9 @@ const UserButton = async () => {
     );
   }
 
-  const firstInitial = session?.user?.name.charAt(0).toUpperCase() ?? "U";
+  const firstInitial = session?.user?.name
+    ? session?.user?.name.charAt(0).toUpperCase()
+    : "U";
 
   return (
     <div className="flec gap-2 items-center">

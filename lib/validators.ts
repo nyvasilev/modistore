@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { formatNumnerWithDecimal } from "./utils";
-import { CardTitle } from "@/components/ui/card";
 
 const currency = z
   .string()

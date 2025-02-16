@@ -1,10 +1,28 @@
 "use server";
 import { cookies } from "next/headers";
 import { CartItem } from "@/types";
-import { formatError, converToPlainObject } from "../utils";
+import { formatError, converToPlainObject, round2 } from "../utils";
 import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
-import { cartItemSchema } from "../validators";
+import { cartItemSchema, insertCartSchema } from "../validators";
+import { revalidatePath } from "next/cache";
+
+// Calculate cart prices
+const caculatePrice = (items: CartItem[]) => {
+  const itemsPrice = round2(
+      items.reduce((acc, item) => acc + Number(item.price) * item.qty, 0),
+    ),
+    shippingPrice = round2(itemsPrice > 100 ? 0 : 10),
+    taxPrice = round2(0.15 * itemsPrice),
+    totalPrice = round2(itemsPrice + taxPrice + shippingPrice);
+
+  return {
+    itemsPrice: itemsPrice.toFixed(2),
+    shippingPrice: shippingPrice.toFixed(2),
+    taxPrice: taxPrice.toFixed(2),
+    totalPrice: totalPrice.toFixed(2),
+  };
+};
 
 export const addItemToCart = async (data: CartItem) => {
   try {
@@ -26,10 +44,27 @@ export const addItemToCart = async (data: CartItem) => {
       where: { id: item.productId },
     });
 
-    return {
-      success: true,
-      message: "Item added to cart",
-    };
+    if (!product) throw new Error("Product not found");
+    if (!cart) {
+      // Create new cart object
+      const newCart = insertCartSchema.parse({
+        userId: userId,
+        items: [item],
+        sessionCartId: sessionCartId,
+        ...caculatePrice([item]),
+      });
+      // Add to database
+      await prisma.cart.create({
+        data: newCart,
+      });
+
+      // Revalidate product page
+      revalidatePath(`/product/${product.slug}`);
+      return {
+        success: true,
+        message: "Item added to cart",
+      };
+    }
   } catch (error) {
     return {
       success: false,
@@ -44,7 +79,7 @@ export const getMyCart = async () => {
   if (!sessionCartId) throw new Error("Cart session not found");
 
   // Get session and user ID
-  const session = auth();
+  const session = await auth();
   const userId = session?.user?.id ? (session.user.id as string) : undefined;
 
   // Get user cart from database

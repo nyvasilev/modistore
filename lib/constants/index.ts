@@ -1,3 +1,5 @@
+import { ShippingAddress } from "@/types";
+
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Modistore";
 export const APP_DESCRIPTION =
   process.env.NEXT_PUBLIC_APP_DESCRIPTION ||
@@ -17,4 +19,12 @@ export const signUpDefaultValues = {
   email: "",
   password: "",
   confirmPassword: "",
+};
+
+export const shippingAddressDefaultValues: ShippingAddress = {
+  fullName: "John Doe",
+  streetAddress: "123 Main st",
+  city: "Anytown",
+  postalCode: "12345",
+  country: "DE",
 };

@@ -9,6 +9,8 @@ const currency = z
     "Price must have excatly two places",
   );
 
+const itemsPrice = {};
+
 // Schema for inserting items
 export const insertProductSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -57,9 +59,9 @@ export const cartItemSchema = z.object({
 export const insertCartSchema = z.object({
   items: z.array(cartItemSchema),
   itemsPrice: currency,
-  totalPrice: currency,
   shippingPrice: currency,
   taxPrice: currency,
+  totalPrice: currency,
   sessionCartId: z.string().min(1, "Session card id is required"),
   userId: z.string().optional().nullable(),
 });
@@ -84,3 +86,26 @@ export const paymentMethodShema = z
     path: ["type"],
     message: "Invalid payment method",
   });
+
+// Schema for inserting order
+export const insertOrderSchema = z.object({
+  userId: z.string().min(1, "User is required"),
+  itemsPrice: currency,
+  shippingPrice: currency,
+  taxPrice: currency,
+  totalPrice: currency,
+  paymentMethod: z.string().refine((data) => PAYMENT_METHODS.includes(data), {
+    message: "Invalid payment method",
+  }),
+  shippigAddress: shippingAddressSchema,
+});
+
+// Schema for inserting an order item
+export const insertingOrderItemSchema = z.object({
+  productId: z.string(),
+  slug: z.string(),
+  image: z.string(),
+  name: z.string(),
+  price: currency,
+  qty: z.number(),
+});

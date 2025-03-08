@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { getMyCart } from "@/lib/actions/cart.actions";
 import { getUserById } from "@/lib/actions/user.actions";
-import { ShipplngAddress } from "@/types";
+import { ShippingAddress } from "@/types";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import { formatCurrency } from "@/lib/utils";
+import PlaceOrderForm from "./place-order-form";
 
 export const metadata: Metadata = {
   title: "Place Order",
@@ -34,7 +35,7 @@ const PlaceOrderPage = async () => {
   if (!cart || !cart?.items?.length) redirect("/cart");
   if (!user.address) redirect("/shipping-address");
   if (!user.paymentMethod) redirect("/payment-method");
-  const userAddress = user.address as ShipplngAddress;
+  const userAddress = user.address as ShippingAddress;
 
   return (
     <>
@@ -130,6 +131,7 @@ const PlaceOrderPage = async () => {
                 <div>Total</div>
                 <div>{formatCurrency(cart.totalPrice)}</div>
               </div>
+              <PlaceOrderForm />
             </CardContent>
           </Card>
         </div>

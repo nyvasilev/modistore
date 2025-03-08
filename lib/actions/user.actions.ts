@@ -96,7 +96,7 @@ export const updateUserAddress = async (data: ShippingAddress) => {
 
     return {
       success: true,
-      message: "User update siccessfully",
+      message: "User update successfully",
     };
   } catch (error) {
     return {

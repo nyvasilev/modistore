@@ -6,13 +6,14 @@ import { auth } from "@/auth";
 import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.actions";
 import { insertOrderSchema } from "../validators";
-import { prisma } from "@db/prisma";
+import { prisma } from "@/db/prisma";
 import { CartItem } from "@/types";
 
 // Create order and create order items
 export const createOrder = async () => {
   try {
     const session = await auth();
+
     if (!session) throw new Error("User is not authenticated");
 
     const cart = await getMyCart();
@@ -20,7 +21,6 @@ export const createOrder = async () => {
     if (!userId) throw new Error("User not found");
 
     const user = await getUserById(userId);
-
     if (!cart || !cart?.items.length)
       return {
         success: false,
@@ -55,6 +55,7 @@ export const createOrder = async () => {
     const insertedOrderId = await prisma.$transaction(async (tx) => {
       // Create order
       const insertedOrder = await tx.order.create({ data: order });
+
       // Create orders items from cart items
       for (const item of cart.items as CartItem[]) {
         await tx.orderItem.create({
@@ -65,8 +66,9 @@ export const createOrder = async () => {
           },
         });
       }
+
       // Clear cart
-      tx.cart.update({
+      await tx.cart.update({
         where: { id: cart.id },
         data: {
           items: [],

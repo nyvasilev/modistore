@@ -9,8 +9,6 @@ const currency = z
     "Price must have excatly two places",
   );
 
-const itemsPrice = {};
-
 // Schema for inserting items
 export const insertProductSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),

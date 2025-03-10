@@ -1,12 +1,12 @@
 import { z } from "zod";
-import { formatNumnerWithDecimal } from "./utils";
+import { formatNumberWithDecimal } from "./utils";
 import { PAYMENT_METHODS } from "./constants";
 
 const currency = z
   .string()
   .refine(
-    (value) => /^\d+(\.\d{2})?$/.test(formatNumnerWithDecimal(Number(value))),
-    "Price must have excatly two places",
+    (value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(Number(value))),
+    "Price must have exactly two places",
   );
 
 // Schema for inserting items
@@ -76,7 +76,7 @@ export const shippingAddressSchema = z.object({
 });
 
 // Schema for payment methods
-export const paymentMethodShema = z
+export const paymentMethodSchema = z
   .object({
     type: z.string().min(1, "Payment method is required"),
   })

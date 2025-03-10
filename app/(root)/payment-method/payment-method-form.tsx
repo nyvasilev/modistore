@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useTransition } from "react";
-import { paymentMethodShema } from "@/lib/validators";
+import { paymentMethodSchema } from "@/lib/validators";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -28,8 +28,8 @@ const PaymentMethodForm = ({
   const router = useRouter();
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof paymentMethodShema>>({
-    resolver: zodResolver(paymentMethodShema),
+  const form = useForm<z.infer<typeof paymentMethodSchema>>({
+    resolver: zodResolver(paymentMethodSchema),
     defaultValues: {
       type: prefferedPaymentMethod || DEFAULT_PAYMENT_METHOD,
     },
@@ -37,7 +37,7 @@ const PaymentMethodForm = ({
 
   const [isPending, startTransitions] = useTransition();
 
-  const onSubmit = async (values: z.infer<typeof paymentMethodShema>) => {
+  const onSubmit = async (values: z.infer<typeof paymentMethodSchema>) => {
     startTransitions(async () => {
       const res = await updateUserPaymentMethod(values);
 

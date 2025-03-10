@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { CartItem } from "@/types";
-import { formatError, converToPlainObject, round2 } from "../utils";
+import { formatError, convertToPlainObject, round2 } from "../utils";
 import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
 import { cartItemSchema, insertCartSchema } from "../validators";
@@ -37,7 +37,7 @@ export const addItemToCart = async (data: CartItem) => {
     // Get cart
     const cart = await getMyCart();
 
-    // Parse and validate itema
+    // Parse and validate item
     const item = cartItemSchema.parse(data);
 
     // Find product in database
@@ -130,7 +130,7 @@ export const getMyCart = async () => {
   if (!cart) return undefined;
 
   // Convert decimals and return
-  return converToPlainObject({
+  return convertToPlainObject({
     ...cart,
     items: cart.items as CartItem[],
     itemsPrice: cart.itemsPrice.toString(),
@@ -174,7 +174,7 @@ export const removeItemFromCart = async (productId: string) => {
         exist.qty - 1;
     }
 
-    // Update cart in databse
+    // Update cart in database
     await prisma.cart.update({
       where: { id: cart.id },
       data: {

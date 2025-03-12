@@ -30,6 +30,8 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
     deliveredAt,
   } = order;
 
+  console.log("itemsPrice", itemsPrice);
+
   return (
     <>
       <h1 className="py-4 text-2xl">Order {formatId(id)}</h1>

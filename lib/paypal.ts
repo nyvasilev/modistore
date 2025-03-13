@@ -16,7 +16,7 @@ export const paypal = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authourization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         intent: "CAPTURE",

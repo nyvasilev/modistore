@@ -36,7 +36,7 @@ export const signInWithCredentials = async (
 export const signOutUser = async () => await signOut();
 
 // Sign up user
-export const signUpUser = async (prevState: unknown, formData: FormData) => {
+export const signUpUser = async (_prevState: unknown, formData: FormData) => {
   try {
     const user = signUpFormSchema.parse({
       name: formData.get("name"),
@@ -115,6 +115,7 @@ export const updateUserPaymentMethod = async (
     const currentUser = await prisma.user.findFirst({
       where: { id: session?.user?.id },
     });
+
     if (!currentUser) throw new Error("User not found");
     const paymentMethod = paymentMethodSchema.parse(data);
     await prisma.user.update({
@@ -125,6 +126,33 @@ export const updateUserPaymentMethod = async (
     return {
       success: true,
       message: "User updated siccessfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      meessage: formatError(error),
+    };
+  }
+};
+
+// Update the use profile
+export const updateProfile = async (user: { name: string; email: string }) => {
+  try {
+    const session = await auth();
+    const currentUser = await prisma.user.findFirst({
+      where: { id: session?.user?.id },
+    });
+
+    if (!currentUser) throw new Error("User not found");
+
+    await prisma.user.update({
+      where: { id: currentUser.id },
+      data: { name: user.name },
+    });
+
+    return {
+      success: true,
+      meessage: "User update successfully",
     };
   } catch (error) {
     return {

@@ -19,12 +19,14 @@ import {
 } from "lucide-react";
 import { formatCurrency, formatDateTime, formatNumber } from "@/lib/utils";
 import Charts from "./charts";
+import { requireAdmin } from "@/lib/auth-guard";
 
 export const metadata: Metadata = {
   title: "Admin Dashboard",
 };
 
 const AdminOverviewPage = async () => {
+  await requireAdmin();
   const session = await auth();
   if (session?.user?.role !== "admin")
     throw new Error("User is not authorized");

@@ -310,5 +310,6 @@ export const getOrderSummary = async () => {
     usersCounts,
     totalSales,
     latestSales,
+    salesData,
   };
 };

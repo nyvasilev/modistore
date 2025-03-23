@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { getAllOrders } from "@/lib/actions/order.actions";
+import { deleteOrder, getAllOrders } from "@/lib/actions/order.actions";
 import { Metadata } from "next";
 import { requireAdmin } from "@/lib/auth-guard";
 import Link from "next/link";
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Pagination from "@/components/shared/pagination";
+import DeleteDialog from "@/components/shared/delete-dialog";
 
 export const metadata: Metadata = {
   title: "Admin Orders",
@@ -31,8 +32,6 @@ const AdminOrdersPage = async (props: {
     throw new Error("User is not authorized");
 
   const orders = await getAllOrders({ page: Number(page), limit: 2 });
-
-  console.log(orders);
 
   return (
     <div className="space-y-2">
@@ -74,6 +73,7 @@ const AdminOrdersPage = async (props: {
                       <span className="px-2">Details</span>
                     </Link>
                   </Button>
+                  <DeleteDialog id={order.id} action={deleteOrder} />
                 </TableCell>
               </TableRow>
             ))}

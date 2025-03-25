@@ -25,7 +25,6 @@ import {
   createPayPalOrder,
   approvePayPalOrder,
   updateOrderOnPaidCOD,
-  deleteOrder,
   deliverOrder,
 } from "@/lib/actions/order.actions";
 

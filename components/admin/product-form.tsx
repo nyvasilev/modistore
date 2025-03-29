@@ -9,6 +9,7 @@ import { insertProductSchema, updateProductSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { productDefaultValues } from "@/lib/constants";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -104,18 +105,136 @@ const ProductForm = ({
         </div>
         <div className="flex flex-col md:flex-row gap-5">
           {/* Category */}
+          <FormField
+            control={form.control}
+            name="category"
+            render={({
+              field,
+            }: {
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "category"
+              >;
+            }) => (
+              <FormItem className="w-full">
+                <FormLabel>Category</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter category" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           {/* Brand  */}
+          <FormField
+            control={form.control}
+            name="brand"
+            render={({
+              field,
+            }: {
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "brand"
+              >;
+            }) => (
+              <FormItem className="w-full">
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter brand" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <div className="flex flex-col md:flex-row gap-5">
           {/* Price */}
+          <FormField
+            control={form.control}
+            name="price"
+            render={({
+              field,
+            }: {
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "price"
+              >;
+            }) => (
+              <FormItem className="w-full">
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter price" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           {/* Stock  */}
+          <FormField
+            control={form.control}
+            name="stock"
+            render={({
+              field,
+            }: {
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "stock"
+              >;
+            }) => (
+              <FormItem className="w-full">
+                <FormLabel>Stock</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter stock" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <div className="upload-field flex flex-col md:flex-row gap-5">
           {/* Images */}
         </div>
         <div className="upload-field">{/* isFeatured */}</div>
-        <div>{/* Description */}</div>
-        <div>{/* Submit */}</div>
+        <div>
+          {/* Description */}
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({
+              field,
+            }: {
+              field: ControllerRenderProps<
+                z.infer<typeof insertProductSchema>,
+                "description"
+              >;
+            }) => (
+              <FormItem className="w-full">
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Enter description"
+                    {...field}
+                    className="resize-none"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div>
+          {/* Submit */}
+          <Button
+            type="submit"
+            size="lg"
+            disabled={form.formState.isSubmitting}
+            className="button col-span-2 w-full"
+          >
+            {form.formState.isSubmitting ? "Submitting" : `${type} Product`}
+          </Button>
+        </div>
       </form>
     </Form>
   );

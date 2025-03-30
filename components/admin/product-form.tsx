@@ -2,7 +2,7 @@
 import { Product } from "@/types";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { useForm, ControllerRenderProps } from "react-hook-form";
+import { useForm, ControllerRenderProps, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import slugify from "slugify";
 import { insertProductSchema, updateProductSchema } from "@/lib/validators";
@@ -18,7 +18,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { createProduct, updateProduct } from "@/lib/actions/products.actions";
 
 const ProductForm = ({
   type,
@@ -42,9 +43,58 @@ const ProductForm = ({
     defaultValues: product ?? productDefaultValues,
   });
 
+  const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
+    values,
+  ) => {
+    // On create
+    if (type === "Create") {
+      const res = await createProduct(values);
+
+      if (!res.success) {
+        toast({
+          variant: "destructive",
+          description: res.message,
+        });
+      } else {
+        toast({
+          description: res.message,
+        });
+
+        router.push("/admin/products");
+      }
+    }
+
+    // On update
+    if (type === "Update") {
+      if (!productId) {
+        router.push("/admin/products");
+        return;
+      }
+
+      const res = await updateProduct({ ...values, id: productId });
+
+      if (!res.success) {
+        toast({
+          variant: "destructive",
+          description: res.message,
+        });
+      } else {
+        toast({
+          description: res.message,
+        });
+
+        router.push("/admin/products");
+      }
+    }
+  };
+
   return (
     <Form {...form}>
-      <form className="space-y-8">
+      <form
+        method="POST"
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-8"
+      >
         <div className="flex flex-col md:flex-row gap-5">
           {/* Name */}
           <FormField

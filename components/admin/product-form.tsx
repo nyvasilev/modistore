@@ -193,7 +193,7 @@ const ProductForm = ({
               >;
             }) => (
               <FormItem className="w-full">
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Brand</FormLabel>
                 <FormControl>
                   <Input placeholder="Enter brand" {...field} />
                 </FormControl>

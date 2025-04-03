@@ -1,6 +1,6 @@
 import { requireAdmin } from "@/lib/auth-guard";
 import { Metadata } from "next";
-import { getAllUsers } from "@/lib/actions/user.actions";
+import { getAllUsers, deleteUser } from "@/lib/actions/user.actions";
 import {
   Table,
   TableBody,
@@ -12,9 +12,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Pagination from "@/components/shared/pagination";
-import { formatDateTime, formatId, formatCurrency } from "@/lib/utils";
+import { formatId } from "@/lib/utils";
 import Link from "next/link";
-import { deleteOrder } from "@/lib/actions/order.actions";
 import DeleteDialog from "@/components/shared/delete-dialog";
 
 export const metadata: Metadata = {
@@ -65,7 +64,7 @@ const AdminUserPage = async (props: {
                       <span className="px-2">Edit</span>
                     </Link>
                   </Button>
-                  {/* <DeleteDialog id={user.id} action={deleteOrder} /> */}
+                  <DeleteDialog id={user.id} action={deleteUser} />
                 </TableCell>
               </TableRow>
             ))}

@@ -14,7 +14,7 @@ import { formatError } from "../utils";
 import { ShippingAddress } from "@/types";
 import { z } from "zod";
 import { PAGE_SIZE } from "../constants";
-import { totalmem } from "os";
+import { revalidatePath } from "next/cache";
 
 // Sign in the user with credentials
 export const signInWithCredentials = async (
@@ -27,7 +27,7 @@ export const signInWithCredentials = async (
       password: formData.get("password"),
     });
     await signIn("credentials", user);
-    return { success: true, message: "Sign in siccessfully" };
+    return { success: true, message: "Sign in successfully" };
   } catch (error) {
     if (isRedirectError(error)) throw error;
     return { success: false, message: "Invalid email or message" };
@@ -184,4 +184,17 @@ export const getAllUsers = async ({
     data,
     totalPages: Math.ceil(dataCount / limit),
   };
+};
+
+// Delete a user
+export const deleteUser = async (id: string) => {
+  try {
+    await prisma.user.delete({ where: { id } });
+
+    revalidatePath("/admin/users");
+
+    return { success: true, message: "User deleted successfully" };
+  } catch (error) {
+    return { success: false, message: formatError(error) };
+  }
 };

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useForm, ControllerRenderProps } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { updateUser } from "@/lib/actions/user.actions";
 import {
   Form,
   FormField,
@@ -37,8 +38,29 @@ const UpdateUserForm = ({
     defaultValues: user,
   });
 
-  const onSubmit = () => {
-    return;
+  const onSubmit = async (values: z.infer<typeof updateUserSchema>) => {
+    try {
+      const res = await updateUser({
+        ...values,
+        id: user.id,
+      });
+
+      if (!res.success) {
+        return toast({
+          variant: "destructive",
+          description: res.message,
+        });
+      }
+
+      toast({ description: res.message });
+      form.reset();
+      router.push("/admin/users");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: (error as Error).message,
+      });
+    }
   };
 
   return (

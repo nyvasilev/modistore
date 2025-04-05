@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Update User",
 };
 
-const AdminUserUpdateaPage = async (props: {
+const AdminUserUpdatePage = async (props: {
   params: Promise<{ id: string }>;
 }) => {
   await requireAdmin();
@@ -25,4 +25,4 @@ const AdminUserUpdateaPage = async (props: {
   );
 };
 
-export default AdminUserUpdateaPage;
+export default AdminUserUpdatePage;

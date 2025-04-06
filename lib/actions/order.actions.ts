@@ -337,9 +337,7 @@ export const getAllOrders = async ({
       : {};
 
   const data = await prisma.order.findMany({
-    where: {
-      ...queryFilter,
-    },
+    where: { ...queryFilter },
     orderBy: { createdAt: "desc" },
     take: limit,
     skip: (page - 1) * limit,

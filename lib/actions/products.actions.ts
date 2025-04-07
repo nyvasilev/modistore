@@ -116,3 +116,13 @@ export const updateProduct = async (
     return { success: false, message: formatError(error) };
   }
 };
+
+// Get all categories
+export const getAllCategories = async () => {
+  const data = await prisma.product.groupBy({
+    by: ["category"],
+    _count: true,
+  });
+
+  return data;
+};

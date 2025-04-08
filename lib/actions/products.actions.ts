@@ -126,3 +126,14 @@ export const getAllCategories = async () => {
 
   return data;
 };
+
+// Get featured products
+export const getFeaturedProducts = async () => {
+  const data = await prisma.product.findMany({
+    where: { isFeatured: true },
+    orderBy: { createdAt: "desc" },
+    take: 4,
+  });
+
+  return convertToPlainObject(data);
+};

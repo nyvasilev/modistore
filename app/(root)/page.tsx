@@ -8,7 +8,7 @@ import ProductCarousel from "@/components/shared/product/product-carousel";
 const Homepage = async () => {
   const latestProducts = await getLatestProducts();
   const featuredtProducts = await getFeaturedProducts();
-  console.log(featuredtProducts);
+
   return (
     <>
       {!!featuredtProducts.length && (

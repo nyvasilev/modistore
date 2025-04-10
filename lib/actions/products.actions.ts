@@ -36,17 +36,21 @@ export const getProductById = async (productId: string) => {
 
 // Get all products
 export const getAllProducts = async ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   query,
   limit = PAGE_SIZE,
   page,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   category,
+  price,
+  rating,
+  sort,
 }: {
   query: string;
   limit?: number;
   page: number;
   category?: string;
+  price?: string;
+  rating?: string;
+  sort?: string;
 }) => {
   const data = await prisma.product.findMany({
     orderBy: { createdAt: "desc" },

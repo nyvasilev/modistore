@@ -8,6 +8,8 @@ import Link from "next/link";
 
 const ratings = [4, 3, 2, 1];
 
+const sortOrders = ["newest", "lowest", "highest", "rating"];
+
 const prices = [
   { name: "$1 to $50", value: "1-50" },
   { name: "$51 to $100", value: "51-100" },
@@ -165,6 +167,18 @@ const SearchPage = async (props: {
                 <Link href="/search">Clear</Link>
               </Button>
             ) : null}
+          </div>
+          <div>
+            Sort by{" "}
+            {sortOrders.map((s) => (
+              <Link
+                key={s}
+                className={`mx-2 ${sort == s && "font-bold"}`}
+                href={getFilterUrl({ s })}
+              >
+                {s}
+              </Link>
+            ))}
           </div>
         </div>
 

@@ -8,7 +8,6 @@ import { insertProductSchema, updateProductSchema } from "../validators";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
-import { SorOption } from "@/types";
 
 // get latest products
 export async function getLatestProducts() {

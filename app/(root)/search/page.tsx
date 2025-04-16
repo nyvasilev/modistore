@@ -13,9 +13,9 @@ const sortOrders = ["newest", "lowest", "highest", "rating"];
 export const generateMetadata = async (props: {
   searchParams: Promise<{
     q: string;
-    category: string;
-    price: string;
-    rating: string;
+    category?: string;
+    price?: string;
+    rating?: string;
   }>;
 }) => {
   const {
@@ -69,7 +69,7 @@ const SearchPage = async (props: {
     rating = "all",
     sort = "newest",
     page = "1",
-  } = props.searchParams;
+  } = await props.searchParams;
 
   // Construct filter url
   const getFilterUrl = ({
@@ -193,8 +193,7 @@ const SearchPage = async (props: {
             {rating !== "all" && "Rating:" + rating + " stars & up"}
             &nbsp;
             {(q !== "all" && q !== "") ||
-            category !== "all" ||
-            category !== "" ||
+            (category !== "all" && category !== "") ||
             rating !== "all" ||
             price !== "all" ? (
               <Button variant="link" asChild>

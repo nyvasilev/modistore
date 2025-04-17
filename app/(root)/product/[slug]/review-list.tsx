@@ -2,6 +2,7 @@
 import { Review } from "@/types";
 import { useState } from "react";
 import Link from "next/link";
+import ReviewForm from "./review-form";
 
 const Reviewalist = ({
   userId,
@@ -18,7 +19,7 @@ const Reviewalist = ({
     <div className="space-y-4">
       {!!reviews.length && <div>No Reviews Yet</div>}
       {userId ? (
-        <>{/* Review here */}</>
+        <ReviewForm userId={userId} productId={productId} />
       ) : (
         <div>
           Please

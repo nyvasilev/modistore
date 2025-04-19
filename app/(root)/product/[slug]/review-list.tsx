@@ -13,13 +13,22 @@ const Reviewalist = ({
   productId: string;
   productSlug: string;
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [reviews, setReviews] = useState<Review[]>([]);
+
+  const reload = () => {
+    throw new Error("Review Submitted");
+  };
 
   return (
     <div className="space-y-4">
       {!!reviews.length && <div>No Reviews Yet</div>}
       {userId ? (
-        <ReviewForm userId={userId} productId={productId} />
+        <ReviewForm
+          userId={userId}
+          productId={productId}
+          onReviewSubmitted={reload}
+        />
       ) : (
         <div>
           Please

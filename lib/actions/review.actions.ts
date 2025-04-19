@@ -38,7 +38,7 @@ export const createUpdateReview = async (
       if (reviewExists) {
         // Update review
         await tx.review.update({
-          where: { ida: reviewExists.id },
+          where: { id: reviewExists.id },
           data: {
             title: review.title,
             description: review.description,

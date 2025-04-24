@@ -242,7 +242,6 @@ const OrderDetailsTable = ({
                 </div>
               )}
 
-              {console.log(!isPaid && paymentMethod === "Stripe")}
               {/* Stripe payment */}
               {!isPaid && paymentMethod === "Stripe" && stripeClientSecret && (
                 <StripePayment

@@ -12,6 +12,8 @@ import { CartItem, PaymentResult } from "@/types";
 import { paypal } from "../paypal";
 import { PAGE_SIZE } from "../constants";
 import { Prisma } from "@prisma/client";
+import { sendPurchaseReceipt } from "@/email";
+import { ShippingAddress } from "@/types";
 
 // Create order and create order items
 export const createOrder = async () => {
@@ -240,6 +242,14 @@ export const updateOrderToPaid = async ({
   });
 
   if (!updateOrder) throw new Error("Order not found");
+
+  sendPurchaseReceipt({
+    order: {
+      ...updateOrder,
+      shippingAddress: updateOrder.shippingAddress as ShippingAddress,
+      paymentResult: updateOrder.paymentResult as PaymentResult,
+    },
+  });
 };
 
 // Get user's orders

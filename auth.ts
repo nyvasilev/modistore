@@ -9,7 +9,7 @@ import { cookies } from "next/headers";
 export const config = {
   pages: {
     signIn: "/sign-in",
-    error: "/sign-oyt",
+    error: "/sign-out",
   },
   session: {
     strategy: "jwt" as const,
@@ -22,7 +22,7 @@ export const config = {
         email: { type: "email" },
         password: { type: "password" },
       },
-      async authorize(credentials: any) {
+      async authorize(credentials) {
         if (credentials == null) return null;
         // Find user in database
         const user = await prisma.user.findFirst({
@@ -36,7 +36,7 @@ export const config = {
             credentials.password as string,
             user.password,
           );
-          // If password is corect, return user
+          // If password is correct, return user
           if (isMatch) {
             return {
               id: user.id,
@@ -64,7 +64,7 @@ export const config = {
       return session;
     },
     async jwt({ token, user, trigger, session }: any) {
-      // Asign user fields to token
+      // Assign user fields to token
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -89,7 +89,7 @@ export const config = {
               await prisma.cart.deleteMany({
                 where: { userId: user.id },
               });
-              // Assing  new cart
+              // Assign  new cart
               await prisma.cart.update({
                 where: { id: sessionCart.id },
                 data: { userId: user.id },
